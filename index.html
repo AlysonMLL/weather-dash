@@ -32,10 +32,10 @@
 <body class="bg-slate-50 text-slate-900 dark:bg-bgDeep dark:text-white font-sans min-h-screen p-4 md:p-8 transition-colors duration-300">
 
     <!-- Cabeçalho -->
+    <!-- Cabeçalho -->
     <header class="max-w-7xl mx-auto flex justify-between items-center mb-8">
         <div class="flex items-center gap-4">
             <div>   
-                <!-- Adicionamos um ID na logo para o JS conseguir achá-la -->
                 <img id="logoImg" src="src/assets/weather_logo.png" alt="Logo do Dashboard" class="w-88 h-32">
             </div>
             
@@ -49,9 +49,18 @@
         </div>
         
         <!-- Botão Toggle de Tema -->
-        <button onclick="toggleTheme()" class="bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder p-3 rounded-lg shadow-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition">
-            <!-- Inicia com o ícone de sol -->
-            <img id="themeIcon" src="src/assets/sun_icon.png" alt="Alternar Tema" class="w-5 h-5">
+        <button onclick="toggleTheme()" class="bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder p-3 rounded-lg shadow-sm hover:bg-gray-200 dark:hover:bg-gray-800 transition-all duration-300 group">
+            
+            <!-- SVG do Sol (Visível no Dark Mode) -->
+            <svg id="themeIconSun" class="w-5 h-5 text-slate-500 dark:text-textMuted group-hover:text-neonYellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+            
+            <!-- SVG da Lua (Visível no Light Mode) -->
+            <svg id="themeIconMoon" class="w-5 h-5 text-slate-500 group-hover:text-neonPurple transition-colors hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+            
         </button>
     </header>
 
@@ -77,12 +86,67 @@
                 </div>
             </div>
         </div>
+        <!-- Barra de Pesquisa -->
+        <div class="flex flex-col md:flex-row gap-4 mb-6">
+            <input type="text" id="cityInput" placeholder="Adicionar nova cidade (ex: São Paulo, Caruaru)..." 
+                class="flex-grow bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder text-slate-900 dark:text-white p-4 rounded-xl focus:border-neonCyan focus:outline-none font-sans placeholder-slate-400 dark:placeholder-textMuted transition-colors shadow-sm">
+            <button onclick="adicionarCidade()" 
+                class="bg-slate-900 dark:bg-white text-white dark:text-black font-bold uppercase tracking-widest px-8 py-4 rounded-xl hover:opacity-90 transition shadow-sm hover:-translate-y-1">
+                Adicionar
+            </button>
+        </div>
     </main>
 
     <script>
         // === 1. Geração dos Cards das Cidades ===
         // Configuração de cores e cidades iniciais
-        const defaultCities = ['recife', 'paulista', 'abreu e lima', 'olinda'];
+        // === GERENCIAMENTO DE ESTADO (LOCALSTORAGE) ===
+        function getCidades() {
+            const salvas = localStorage.getItem('weatherDashCities');
+            if (salvas) {
+                return JSON.parse(salvas);
+            }
+            // Retorno padrão caso seja o primeiro acesso do usuário
+            return ['recife', 'paulista', 'abreu e lima', 'olinda'];
+        }
+
+        function salvarCidades(cidades) {
+            localStorage.setItem('weatherDashCities', JSON.stringify(cidades));
+        }
+
+        async function adicionarCidade() {
+            const input = document.getElementById('cityInput');
+            const novaCidade = input.value.trim().toLowerCase();
+            
+            if (!novaCidade) return;
+
+            let cidades = getCidades();
+            
+            if (cidades.includes(novaCidade)) {
+                alert("Esta cidade já está no seu painel.");
+                return;
+            }
+
+            // Testa se o backend consegue achar a cidade antes de salvá-la na memória
+            try {
+                const res = await fetch(`/api/weather/${novaCidade}`);
+                if (!res.ok) throw new Error();
+                
+                cidades.push(novaCidade);
+                salvarCidades(cidades);
+                input.value = ''; // Limpa o campo
+                carregarDashboard(); // Recarrega a tela com a nova cidade
+            } catch (error) {
+                alert("Cidade não encontrada na base de dados. Verifique a ortografia.");
+            }
+        }
+
+        function removerCidade(cidadeParaRemover) {
+            let cidades = getCidades();
+            cidades = cidades.filter(c => c !== cidadeParaRemover);
+            salvarCidades(cidades);
+            carregarDashboard(); // Recarrega a tela sem a cidade
+        }
         const chartColors = ['#6D28D9', '#06B6D4', '#F59E0B', '#EF4444']; 
         let tempChartInstance = null;
         let humChartInstance = null;
@@ -90,28 +154,34 @@
         // === LÓGICA DO TEMA CLARO/ESCURO ===
         function toggleTheme() {
             const htmlEl = document.documentElement;
-            const themeIcon = document.getElementById('themeIcon');
+            const sunIcon = document.getElementById('themeIconSun');
+            const moonIcon = document.getElementById('themeIconMoon');
             const logoImg = document.getElementById('logoImg');
             
             const isDark = htmlEl.classList.toggle('dark');
             
-        
-            themeIcon.src = isDark ? 'src/assets/sun_icon.png' : 'src/assets/lua_icon.png';
+            // Alterna a exibição dos SVGs
+            if (isDark) {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
             
+            // Troca a Logo (Lembre-se de ter a weather_logo_light.png na pasta)
             logoImg.src = isDark ? 'src/assets/weather_logo.png' : 'src/assets/weather_logo_light.png';
 
-            // Atualiza as cores das grades e fontes do Chart.js
+            // Atualiza as cores das grades do Chart.js
             const gridColor = isDark ? '#232336' : '#e2e8f0';
             const textColor = isDark ? '#8B8A9D' : '#64748b';
             
             if (tempChartInstance && humChartInstance) {
-                // Atualiza Gráfico de Temperatura
                 tempChartInstance.options.scales.x.grid.color = gridColor;
                 tempChartInstance.options.scales.y.grid.color = gridColor;
                 tempChartInstance.options.plugins.legend.labels.color = textColor;
                 tempChartInstance.update();
 
-                // Atualiza Gráfico de Umidade
                 humChartInstance.options.scales.y.grid.color = gridColor;
                 humChartInstance.update();
             }
@@ -126,7 +196,7 @@
                 const weatherDataList = [];
                 const forecastDataList = [];
 
-                for (const city of defaultCities) {
+                for (const city of getCidades()) {
                     const weatherRes = await fetch(`/api/weather/${city}`);
                     if (!weatherRes.ok) throw new Error(`Erro ao buscar clima de ${city}`);
                     weatherDataList.push(await weatherRes.json());
@@ -140,12 +210,16 @@
                 weatherDataList.forEach((cidade) => {
                     const card = document.createElement('div');
                     // Classes atualizadas para modo claro/escuro
-                    card.className = "bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-2xl p-6 flex flex-col justify-between shadow-lg hover:border-neonCyan/50 transition-colors duration-300";
+                    // Classes com Hover Neon Turbinado
+                    card.className = "bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-2xl p-6 flex flex-col justify-between shadow-lg hover:-translate-y-1 hover:border-neonCyan hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] transition-all duration-300 group";
                     card.innerHTML = `
                         <div>
                             <div class="flex justify-between items-start mb-1">
                                 <h3 class="text-slate-900 dark:text-white text-xl font-semibold">${cidade.city}</h3>
-                                <svg class="w-6 h-6 text-slate-900 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                                <!-- Botão de remover que chama a nossa nova função -->
+                                <button onclick="removerCidade('${cidade.city.toLowerCase()}')" class="text-slate-300 dark:text-textMuted hover:text-neonRed dark:hover:text-neonRed transition-colors" title="Remover do painel">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
                             </div>
                             <p class="text-slate-500 dark:text-textMuted text-sm capitalize">${cidade.description}</p>
                         </div>
