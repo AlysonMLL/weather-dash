@@ -34,7 +34,7 @@
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-bgDeep dark:text-white font-sans min-h-screen p-4 md:p-8 transition-colors duration-300">
 
-    <!-- Cabeçalho -->
+
     <!-- Cabeçalho -->
     <header class="max-w-7xl mx-auto flex justify-between items-center mb-8">
         <div class="flex items-center gap-4">
@@ -70,6 +70,24 @@
     <!-- Grade Principal -->
     <main class="max-w-7xl mx-auto space-y-6">
         
+        <!-- Barra de Pesquisa com Typeahead -->
+        <div class="flex flex-col md:flex-row gap-4 mb-6 relative">
+            <div class="relative flex-grow">
+                <input type="text" id="cityInput" placeholder="Adicionar nova cidade (ex: São Paulo, Caruaru)..." 
+                    oninput="buscarSugestoes(this.value)" autocomplete="off"
+                    class="w-full bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder text-slate-900 dark:text-white p-4 rounded-xl focus:border-neonCyan focus:outline-none font-sans placeholder-slate-400 dark:placeholder-textMuted transition-colors shadow-sm">
+                
+                <!-- Caixa de Sugestões (Flutuante) -->
+                <ul id="suggestionsBox" class="absolute z-20 w-full mt-2 bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-xl shadow-2xl hidden overflow-hidden transition-colors">
+                    <!-- As sugestões vão aparecer aqui via JS -->
+                </ul>
+            </div>
+            
+            <button onclick="adicionarCidade()" 
+                class="bg-slate-900 dark:bg-white text-white dark:text-black font-bold uppercase tracking-widest px-8 py-4 rounded-xl hover:opacity-90 transition shadow-sm hover:-translate-y-1">
+                Adicionar
+            </button>
+        </div>
         <!-- Linha 1: Cards das Cidades -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="cityCardsContainer"></div>
 
@@ -89,24 +107,7 @@
                 </div>
             </div>
         </div>
-        <!-- Barra de Pesquisa com Typeahead -->
-        <div class="flex flex-col md:flex-row gap-4 mb-6 relative">
-            <div class="relative flex-grow">
-                <input type="text" id="cityInput" placeholder="Adicionar nova cidade (ex: São Paulo, Caruaru)..." 
-                    oninput="buscarSugestoes(this.value)" autocomplete="off"
-                    class="w-full bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder text-slate-900 dark:text-white p-4 rounded-xl focus:border-neonCyan focus:outline-none font-sans placeholder-slate-400 dark:placeholder-textMuted transition-colors shadow-sm">
-                
-                <!-- Caixa de Sugestões (Flutuante) -->
-                <ul id="suggestionsBox" class="absolute z-20 w-full mt-2 bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-xl shadow-2xl hidden overflow-hidden transition-colors">
-                    <!-- As sugestões vão aparecer aqui via JS -->
-                </ul>
-            </div>
-            
-            <button onclick="adicionarCidade()" 
-                class="bg-slate-900 dark:bg-white text-white dark:text-black font-bold uppercase tracking-widest px-8 py-4 rounded-xl hover:opacity-90 transition shadow-sm hover:-translate-y-1">
-                Adicionar
-            </button>
-        </div>
+        
 
         <!-- Seção de Especificações Técnicas (FAQ) -->
         <div class="mt-16 pt-10 border-t border-gray-200 dark:border-cardBorder">
@@ -117,7 +118,7 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Card FAQ 1 -->
-                <div class="bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-2xl p-6 shadow-sm hover:border-neonCyan transition-colors">
+                <div class="bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-2xl p-6 flex flex-col justify-between shadow-lg hover:-translate-y-1 hover:border-neonCyan hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] transition-all duration-300 group">
                     <div class="bg-slate-100 dark:bg-bgDeep w-12 h-12 rounded-lg flex items-center justify-center mb-4 text-neonCyan">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
                     </div>
@@ -128,7 +129,7 @@
                 </div>
 
                 <!-- Card FAQ 2 -->
-                <div class="bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-2xl p-6 shadow-sm hover:border-neonPurple transition-colors">
+                <div class="bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-2xl p-6 flex flex-col justify-between shadow-lg hover:-translate-y-1 hover:border-neonCyan hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] transition-all duration-300 group">
                     <div class="bg-slate-100 dark:bg-bgDeep w-12 h-12 rounded-lg flex items-center justify-center mb-4 text-neonPurple">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
@@ -139,7 +140,7 @@
                 </div>
 
                 <!-- Card FAQ 3 -->
-                <div class="bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-2xl p-6 shadow-sm hover:border-neonYellow transition-colors">
+                <div class="bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-2xl p-6 flex flex-col justify-between shadow-lg hover:-translate-y-1 hover:border-neonCyan hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] transition-all duration-300 group">
                     <div class="bg-slate-100 dark:bg-bgDeep w-12 h-12 rounded-lg flex items-center justify-center mb-4 text-neonYellow">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                     </div>
@@ -150,9 +151,75 @@
                 </div>
             </div>
         </div>
+
+        <!-- Seção de Dúvidas Frequentes & Tutorial (FAQ Interativo) -->
+        <div class="mt-16 pt-10 border-t border-gray-200 dark:border-cardBorder">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Dúvidas Frequentes & Como Usar</h2>
+                <p class="text-slate-500 dark:text-textMuted mt-2">Um guia rápido para você extrair o máximo do WeatherDash.</p>
+            </div>
+            
+            <!-- Container centralizado para não ficar esticado demais em telas grandes -->
+            <div class="max-w-3xl mx-auto space-y-4">
+                
+                <!-- Pergunta 1 -->
+                <details class="group bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-2xl shadow-sm [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-slate-900 dark:text-white hover:text-neonCyan dark:hover:text-neonCyan transition-colors">
+                        <span>Como adiciono ou removo uma cidade do meu painel?</span>
+                        <!-- Ícone que gira quando a aba abre (group-open) -->
+                        <span class="transition-transform duration-300 group-open:rotate-180">
+                            <svg class="w-5 h-5 text-slate-400 dark:text-textMuted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-sm text-slate-600 dark:text-textMuted leading-relaxed border-t border-gray-100 dark:border-cardBorder pt-4">
+                        Para <strong>adicionar</strong>, digite o nome da cidade na barra de pesquisa no topo da página. Aguarde um instante para que o sistema sugira as opções (processadas via API de Geocoding) e clique na desejada. Para <strong>remover</strong>, basta clicar no ícone de "X" localizado no canto superior direito do card da cidade.
+                    </div>
+                </details>
+
+                <!-- Pergunta 2 -->
+                <details class="group bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-2xl shadow-sm [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-slate-900 dark:text-white hover:text-neonPurple dark:hover:text-neonPurple transition-colors">
+                        <span>Preciso criar uma conta para salvar minhas cidades?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180">
+                            <svg class="w-5 h-5 text-slate-400 dark:text-textMuted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-sm text-slate-600 dark:text-textMuted leading-relaxed border-t border-gray-100 dark:border-cardBorder pt-4">
+                        Não! O WeatherDash utiliza o <strong>LocalStorage</strong> do seu próprio navegador para armazenar as suas preferências de forma local. Isso significa que suas cidades estarão lá sempre que você acessar o painel pelo mesmo dispositivo, garantindo total privacidade e uma experiência sem fricção.
+                    </div>
+                </details>
+
+                <!-- Pergunta 3 -->
+                <details class="group bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-2xl shadow-sm [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-slate-900 dark:text-white hover:text-neonYellow dark:hover:text-neonYellow transition-colors">
+                        <span>Com que frequência os dados climáticos são atualizados?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180">
+                            <svg class="w-5 h-5 text-slate-400 dark:text-textMuted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-sm text-slate-600 dark:text-textMuted leading-relaxed border-t border-gray-100 dark:border-cardBorder pt-4">
+                        Para garantir alta performance e mitigar redundâncias no consumo da API externa, nosso orquestrador Backend guarda os dados do clima atual em cache por <strong>15 minutos</strong>. Os dados das previsões gráficas (para as próximas horas) são armazenados em um banco relacional com uma janela de atualização de <strong>30 minutos</strong>.
+                    </div>
+                </details>
+
+                <!-- Pergunta 4 -->
+                 <details class="group bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-2xl shadow-sm [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-slate-900 dark:text-white hover:text-neonRed dark:hover:text-neonRed transition-colors">
+                        <span>Os dados são confiáveis?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180">
+                            <svg class="w-5 h-5 text-slate-400 dark:text-textMuted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-sm text-slate-600 dark:text-textMuted leading-relaxed border-t border-gray-100 dark:border-cardBorder pt-4">
+                        Sim! O WeatherDash consome dados da <strong>OpenWeatherMap API</strong>, uma das fontes mais confiáveis e amplamente utilizadas para informações meteorológicas. Além disso, o sistema realiza transformações e padronizações nos dados recebidos, garantindo que você visualize informações precisas e consistentes.
+                    </div>
+
+
+                 </details>
+
+            </div>
+        </div>
     </main>
     <script src="/src/main.js"></script>
-</body>
-</html>
 </body>
 </html>
