@@ -172,3 +172,33 @@ async def get_forecast(city: str):
     conn.close()
 
     return {"city": city.title(), "forecast": clean_forecast, "source": "api_externa"}
+
+@app.get("/api/search/{query}")
+async def search_city(query: str):
+    # Endpoint oficial de Geocoding do OpenWeatherMap (busca até 5 sugestões)
+    url = f"http://api.openweathermap.org/geo/1.0/direct?q={query}&limit=5&appid={API_KEY}"
+    
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(url)
+        
+        if resp.status_code != 200:
+            return []
+            
+        data = resp.json()
+        
+        # Formatamos a resposta para o frontend ficar limpo
+        sugestoes = []
+        for item in data:
+            nome = item.get("name")
+            estado = item.get("state", "")
+            pais = item.get("country", "")
+            
+            # Monta a string "São Paulo, SP - BR"
+            local = f"{nome}"
+            if estado:
+                local += f", {estado}"
+            local += f" - {pais}"
+            
+            sugestoes.append({"name": nome, "display": local})
+            
+        return sugestoes

@@ -7,6 +7,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- uvicorn main:app --reload -->
+<!-- http://localhost:8000/ -->
     
     <script>
         tailwind.config = {
@@ -86,10 +89,19 @@
                 </div>
             </div>
         </div>
-        <!-- Barra de Pesquisa -->
-        <div class="flex flex-col md:flex-row gap-4 mb-6">
-            <input type="text" id="cityInput" placeholder="Adicionar nova cidade (ex: São Paulo, Caruaru)..." 
-                class="flex-grow bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder text-slate-900 dark:text-white p-4 rounded-xl focus:border-neonCyan focus:outline-none font-sans placeholder-slate-400 dark:placeholder-textMuted transition-colors shadow-sm">
+        <!-- Barra de Pesquisa com Typeahead -->
+        <div class="flex flex-col md:flex-row gap-4 mb-6 relative">
+            <div class="relative flex-grow">
+                <input type="text" id="cityInput" placeholder="Adicionar nova cidade (ex: São Paulo, Caruaru)..." 
+                    oninput="buscarSugestoes(this.value)" autocomplete="off"
+                    class="w-full bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder text-slate-900 dark:text-white p-4 rounded-xl focus:border-neonCyan focus:outline-none font-sans placeholder-slate-400 dark:placeholder-textMuted transition-colors shadow-sm">
+                
+                <!-- Caixa de Sugestões (Flutuante) -->
+                <ul id="suggestionsBox" class="absolute z-20 w-full mt-2 bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-xl shadow-2xl hidden overflow-hidden transition-colors">
+                    <!-- As sugestões vão aparecer aqui via JS -->
+                </ul>
+            </div>
+            
             <button onclick="adicionarCidade()" 
                 class="bg-slate-900 dark:bg-white text-white dark:text-black font-bold uppercase tracking-widest px-8 py-4 rounded-xl hover:opacity-90 transition shadow-sm hover:-translate-y-1">
                 Adicionar
@@ -113,6 +125,58 @@
         function salvarCidades(cidades) {
             localStorage.setItem('weatherDashCities', JSON.stringify(cidades));
         }
+
+        // === TYPEAHEAD & DEBOUNCE ===
+        let debounceTimer;
+
+        async function buscarSugestoes(query) {
+            clearTimeout(debounceTimer); // Cancela o timer anterior se o usuário continuou digitando
+            const box = document.getElementById('suggestionsBox');
+            
+            // Só busca se tiver pelo menos 3 letras
+            if (query.trim().length < 3) { 
+                box.classList.add('hidden'); 
+                return; 
+            }
+
+            // Inicia um novo timer de 500ms
+            debounceTimer = setTimeout(async () => {
+                try {
+                    const res = await fetch(`/api/search/${query}`);
+                    const data = await res.json();
+                    
+                    box.innerHTML = '';
+                    
+                    if (data.length > 0) {
+                        data.forEach(item => {
+                            const li = document.createElement('li');
+                            li.className = "px-6 py-3 cursor-pointer text-slate-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-cardBorder hover:text-neonCyan transition-colors border-b border-gray-100 dark:border-cardBorder last:border-0";
+                            li.textContent = item.display;
+                            
+                            // Quando clica na sugestão:
+                            li.onclick = () => {
+                                document.getElementById('cityInput').value = item.name; // Joga o nome oficial pro input
+                                box.classList.add('hidden'); // Esconde a caixa
+                                adicionarCidade(); // Já aciona o botão de adicionar automaticamente!
+                            };
+                            box.appendChild(li);
+                        });
+                        box.classList.remove('hidden');
+                    } else {
+                        box.classList.add('hidden');
+                    }
+                } catch (error) {
+                    console.error("Erro ao buscar sugestões", error);
+                }
+            }, 500); // Meio segundo de espera
+        }
+
+        // Esconder a caixa de sugestões se clicar fora dela
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('cityInput').contains(e.target)) {
+                document.getElementById('suggestionsBox').classList.add('hidden');
+            }
+        });
 
         async function adicionarCidade() {
             const input = document.getElementById('cityInput');
