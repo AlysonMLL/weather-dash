@@ -20,6 +20,7 @@ def init_db():
             humidity INTEGER,
             wind_speed REAL,
             description TEXT,
+            timezone INTEGER, 
             updated_at DATETIME
         )
     """)

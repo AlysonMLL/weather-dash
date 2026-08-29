@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/public/weather_favicon.png">
 
 <!-- uvicorn main:app --reload -->
 <!-- http://localhost:8000/ -->
@@ -105,6 +106,26 @@
                 <div class="w-full h-64 relative">
                     <canvas id="humidityChart"></canvas>
                 </div>
+            </div>
+        </div>
+
+        <!-- Seção de Previsão Avançada (5 Dias) -->
+        <div class="mt-16 pt-10 border-t border-gray-200 dark:border-cardBorder">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Previsão Estendida</h2>
+                    <p class="text-slate-500 dark:text-textMuted mt-1">Acompanhe a tendência climática para os próximos 5 dias.</p>
+                </div>
+                
+                <!-- Abas Dinâmicas das Cidades (Injetadas via JS) -->
+                <div id="forecastTabs" class="flex flex-wrap gap-2">
+                    
+                </div>
+            </div>
+
+            <!-- Grid dos 5 Dias -->
+            <div id="extendedForecastGrid" class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <!-- Os cards dos dias serão injetados aqui -->
             </div>
         </div>
         
