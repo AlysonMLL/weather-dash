@@ -1,9 +1,16 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from database import init_db
-from services import fetch_weather_data, fetch_forecast_data, fetch_city_suggestions, fetch_extended_forecast, export_weather_data_to_zip, fetch_weather_by_coords
 
+from backend.database import init_db
+from backend.export import export_weather_data_to_zip
+from backend.services import (
+    fetch_weather_by_coords,
+    fetch_city_suggestions,
+    fetch_extended_forecast,
+    fetch_forecast_data,
+    fetch_weather_data,
+)
 
 app = FastAPI()
 app.mount("/src", StaticFiles(directory="src"), name="src")

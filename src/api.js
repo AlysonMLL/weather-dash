@@ -1,5 +1,10 @@
 /* O que há aqui:
-fetch para: clima atual, previsão, previsão estendida, geocoding, geolocalização.
+fetch para: 
+clima atual, 
+previsão, 
+previsão estendida, 
+geocoding, 
+geolocalização.
 */
 
 export async function fetchSugestoes(query) {
