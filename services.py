@@ -1,9 +1,13 @@
 import httpx
 import json
+import io
+import csv
+import zipfile
 from datetime import datetime, timedelta
 from fastapi import HTTPException
 from database import get_connection
 from collections import defaultdict
+from fastapi.responses import StreamingResponse
 
 API_KEY = "7babb836218eaa39d9b8557b33fc51e6"
 WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather"
@@ -161,3 +165,77 @@ async def fetch_extended_forecast(city: str):
         })
 
     return {"city": city.title(), "extended_forecast": extended_forecast}
+
+def export_weather_data_to_zip():
+    conn = get_connection()
+    cursor = conn.cursor()
+    # Busca todos os dados em cache no banco
+    cursor.execute("SELECT city, temp, feels_like, humidity, wind_speed, description, updated_at FROM weather")
+    rows = cursor.fetchall()
+    conn.close()
+
+    # 1. Cria o CSV na memória RAM
+    csv_file = io.StringIO()
+    writer = csv.writer(csv_file)
+    writer.writerow(["Cidade", "Temperatura (C)", "Sensação (C)", "Umidade (%)", "Vento (m/s)", "Clima", "Última Atualização"])
+    writer.writerows(rows)
+
+    # 2. Cria o arquivo ZIP na memória RAM
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, "a", zipfile.ZIP_DEFLATED, False) as zip_file:
+        # Escreve o conteúdo do CSV dentro do ZIP
+        zip_file.writestr("dados_climaticos_atualizados.csv", csv_file.getvalue())
+
+    # 3. Retorna o ponteiro do buffer para o início
+    zip_buffer.seek(0)
+    
+    # 4. Envia o arquivo por Streaming para o Frontend
+    return StreamingResponse(
+        zip_buffer,
+        media_type="application/zip",
+        headers={"Content-Disposition": "attachment; filename=exportacao_weatherdash.zip"}
+    )
+
+async def fetch_weather_by_coords(lat: float, lon: float):
+    
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(f"{WEATHER_URL}?lat={lat}&lon={lon}&appid={API_KEY}&units=metric&lang=pt_br")
+        if resp.status_code != 200:
+            raise HTTPException(status_code=resp.status_code, detail="Erro ao buscar clima por coordenadas")
+        data = resp.json()
+
+    # Extrai o nome da cidade que a API detectou
+    city_name = data["name"].lower()
+    now = datetime.now()
+
+    # Prepara os dados do mesmo jeito que a função principal
+    weather_data = {
+        "city": city_name,
+        "temp": data["main"]["temp"],
+        "feels_like": data["main"]["feels_like"],
+        "humidity": data["main"]["humidity"],
+        "wind_speed": data["wind"]["speed"],
+        "description": data["weather"][0]["description"],
+        "timezone": data["timezone"]
+    }
+
+    # Salva no Cache (SQLite)
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO weather (city, temp, feels_like, humidity, wind_speed, description, timezone, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(city) DO UPDATE SET
+            temp=excluded.temp, feels_like=excluded.feels_like, humidity=excluded.humidity,
+            wind_speed=excluded.wind_speed, description=excluded.description, timezone=excluded.timezone, updated_at=excluded.updated_at
+    """, (
+        weather_data["city"], weather_data["temp"], weather_data["feels_like"],
+        weather_data["humidity"], weather_data["wind_speed"], weather_data["description"], 
+        weather_data["timezone"], now.isoformat()
+    ))
+    conn.commit()
+    conn.close()
+
+    weather_data["city"] = weather_data["city"].title()
+    weather_data["source"] = "api_externa_gps"
+    return weather_data

@@ -44,10 +44,10 @@
             </div>
             
             <div>
-                <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Dashboard Meteorológico Regional</h1>
+                <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Dashboard Meteorológico Internacional</h1>
                 <p class="text-slate-500 dark:text-textMuted text-sm flex items-center gap-1">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    Região Metropolitana do Recife
+                    Monitoramento em tempo real de cidades globais, com dados precisos e visualizações interativas.
                 </p>
             </div>
         </div>
@@ -73,24 +73,32 @@
         
         <!-- Barra de Pesquisa com Typeahead -->
         <div class="flex flex-col md:flex-row gap-4 mb-6 relative">
-            <div class="relative flex-grow">
+            <div class="relative flex-grow flex items-center">
+                <!-- Input de Texto -->
                 <input type="text" id="cityInput" placeholder="Adicionar nova cidade (ex: São Paulo, Caruaru)..." 
                     oninput="buscarSugestoes(this.value)" autocomplete="off"
-                    class="w-full bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder text-slate-900 dark:text-white p-4 rounded-xl focus:border-neonCyan focus:outline-none font-sans placeholder-slate-400 dark:placeholder-textMuted transition-colors shadow-sm">
+                    class="w-full bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder text-slate-900 dark:text-white p-4 pr-12 rounded-xl focus:border-neonCyan focus:outline-none font-sans placeholder-slate-400 dark:placeholder-textMuted transition-colors shadow-sm">
+                
+                <!-- Novo Botão de Geolocalização -->
+                <button onclick="buscarLocalizacao()" id="geoBtn" class="absolute right-4 text-slate-400 hover:text-neonCyan transition-colors duration-300" title="Usar minha localização">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </button>
                 
                 <!-- Caixa de Sugestões (Flutuante) -->
-                <ul id="suggestionsBox" class="absolute z-20 w-full mt-2 bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-xl shadow-2xl hidden overflow-hidden transition-colors">
+                <ul id="suggestionsBox" class="absolute z-20 w-full mt-2 bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-xl shadow-2xl hidden overflow-hidden transition-colors ">
                     <!-- As sugestões vão aparecer aqui via JS -->
                 </ul>
             </div>
             
             <button onclick="adicionarCidade()" 
-                class="bg-slate-900 dark:bg-white text-white dark:text-black font-bold uppercase tracking-widest px-8 py-4 rounded-xl hover:opacity-90 transition shadow-sm hover:-translate-y-1">
+                class="bg-white text-black px-6 py-4 rounded-xl shadow-sm font-bold uppercase tracking-widest flex items-center gap-2 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(6,182,212,0.45)] hover:bg-cardDark hover:text-white hover:border-neonPurple hover:brightness-110 transition-all duration-300">
                 Adicionar
             </button>
         </div>
         <!-- Linha 1: Cards das Cidades -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="cityCardsContainer"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="cityCardsContainer">
+            
+        </div>
 
         <!-- Linha 2: Gráficos -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -99,6 +107,7 @@
                 <div class="w-full h-64 relative">
                     <canvas id="tempChart"></canvas>
                 </div>
+                
             </div>
 
             <div class="bg-white dark:bg-cardDark border border-gray-200 dark:border-cardBorder rounded-2xl p-6 shadow-lg transition-colors duration-300">
@@ -107,7 +116,16 @@
                     <canvas id="humidityChart"></canvas>
                 </div>
             </div>
+
+            
         </div>
+
+            <div>
+                <button onclick="exportarDadosCSV()" class="block mx-auto bg-neonPurple text-white px-6 py-4 rounded-xl shadow-sm font-bold uppercase tracking-widest flex items-center gap-2 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(6,182,212,0.45)] hover:bg-cardDark hover:border-neonPurple hover:brightness-110 transition-all duration-300">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Exportar ZIP
+                </button>
+            </div>
 
         <!-- Seção de Previsão Avançada (5 Dias) -->
         <div class="mt-16 pt-10 border-t border-gray-200 dark:border-cardBorder">
@@ -193,7 +211,7 @@
                         </span>
                     </summary>
                     <div class="px-6 pb-6 text-sm text-slate-600 dark:text-textMuted leading-relaxed border-t border-gray-100 dark:border-cardBorder pt-4">
-                        Para <strong>adicionar</strong>, digite o nome da cidade na barra de pesquisa no topo da página. Aguarde um instante para que o sistema sugira as opções (processadas via API de Geocoding) e clique na desejada. Para <strong>remover</strong>, basta clicar no ícone de "X" localizado no canto superior direito do card da cidade.
+                        Para <strong>adicionar</strong>, digite o nome da cidade na barra de pesquisa no topo da página. Aguarde um instante para que o sistema sugira as opções (processadas via API de Geocoding) e clique na desejada. Para <strong>remover</strong>, basta clicar no ícone de "lixeira" localizado no canto superior direito do card da cidade.
                     </div>
                 </details>
 
@@ -241,6 +259,6 @@
             </div>
         </div>
     </main>
-    <script src="/src/main.js"></script>
+    <script type="module" src="src/main.js"></script>
 </body>
 </html>
