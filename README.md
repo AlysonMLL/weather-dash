@@ -56,7 +56,19 @@ Para garantir a escalabilidade e manutenção, o projeto aplica os princípios d
 
 * **Frontend (Vanilla JS):** Código JavaScript segmentado utilizando ES Modules, separando a lógica de requisição (api.js), armazenamento (storage.js), manipulação da DOM/UI (render.js) e controladores (app.js).
 
-* **Deploy:** Hospedado e automatizado em Render, com pipeline contínuo de integração e deployment (CI/CD) direto do repositório Git, garantindo atualizações de código sem downtime e monitoramento de performance em produção. 
+<br>
+
+# 🚀 Deploy e Infraestrutura
+
+O projeto está em produção e pode ser acessado de qualquer lugar. A infraestrutura foi configurada pensando em automação, segurança e resiliência:
+
+* **Hospedagem (Render):** Deploy realizado como um *Web Service* na nuvem do Render, garantindo alta performance para a aplicação construída em FastAPI
+  
+* **Continuous Deployment (CD):** Integração contínua e automática com o GitHub. A cada novo *commit* (`git push`) na branch principal, o Render realiza o *build* silencioso da nova versão, aplicando a atualização com *Zero Downtime* (sem o site sair do ar).
+  
+* **Estratégia de Cache Efêmero:** O ambiente em nuvem casa perfeitamente com a lógica do nosso micro-pipeline. Como o plano gratuito do Render realiza a hibernação da instância por inatividade, o banco de dados SQLite é intencionalmente zerado a cada novo ciclo. Isso força o sistema a acordar "limpo", garantindo que os dados em cache nunca fiquem obsoletos e atestando a resiliência do sistema de *Upsert*.
+  
+* **Segurança Cloud-Native:** Seguindo as melhores práticas adotadas no ambiente de desenvolvimento local com o uso da biblioteca `python-dotenv`[cite: 6], a chave da OpenWeatherMap API não é exposta no repositório. Ela é injetada de forma segura diretamente através do painel de *Environment Variables* da hospedagem.
 
 <br>
 
