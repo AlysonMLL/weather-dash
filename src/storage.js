@@ -9,8 +9,10 @@ export function getCidades() {
         return JSON.parse(salvas);
     }
     // Retorno padrão caso seja o primeiro acesso do usuário
-    return ['recife', 'paulista', 'abreu e lima', 'olinda'];
+    return ['recife', 'são paulo'];
+    // 'paulista', 'abreu e lima', 'olinda'
 }
+
 
 export function salvarCidades(cidades) {
     localStorage.setItem('weatherDashCities', JSON.stringify(cidades));
