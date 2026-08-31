@@ -6,9 +6,27 @@
 
 Um painel de monitoramento climático de alta performance construído com a arquitetura BFF (Backend For Frontend), focando em extração de dados inteligente, otimização de cache local e visualização de dados (Data Viz) responsiva.
 
+<img width="1000" height="500" alt="weathergif1" src="https://github.com/user-attachments/assets/e67dbcdc-7539-4cd7-ac1c-a6108ccb88b6" />
+
+---
+
 Este projeto não é apenas uma interface que consome uma API pública. Ele atua como um verdadeiro Micro-Pipeline ETL, orquestrando chamadas assíncronas, transformando respostas JSON complexas (cálculos de mínima, máxima e tendências climáticas) e carregando os resultados em um banco de dados relacional para servir como um cache inteligente e de baixíssima latência.
 
+<img width="1000" height="500" alt="weathergif2" src="https://github.com/user-attachments/assets/41d0111a-bd99-4e7b-afa3-78a0ab9b6ea0" />
+
+---
+
 A interface foi projetada com foco absoluto em UX (User Experience), contando com um elegante design Bento Box, animações fluidas e suporte dinâmico a Dark Mode e Light Mode, que altera não apenas o CSS, mas nativamente as renderizações SVG e os gráficos do painel.
+
+<img width="1000" height="500" alt="weathergif4" src="https://github.com/user-attachments/assets/9475c39c-3923-4256-9442-25fa74be7766" />
+
+<br>
+
+---
+
+<img width="1000" height="500" alt="weathergif3" src="https://github.com/user-attachments/assets/89720711-23d9-4311-9b8f-8d0491f15f99" />
+
+---
 
 <br>
 
@@ -59,3 +77,15 @@ Para garantir a escalabilidade e manutenção, o projeto aplica os princípios d
 * **Tailwind CSS (CDN):** Estilização utilitária avançada e Grid Masonry para layout dinâmico.
 
 * **Chart.js:** Visualização profissional de dados (Gráficos de Linha suavizada e Barras).
+
+<br>
+
+# 🗄️ Estrutura do Banco de Dados (Cache)
+
+O sistema relacional garante a integridade dos dados meteorológicos através de chaves primárias e atualizações inteligentes:
+
+* **Tabela weather:** Armazena as condições meteorológicas em tempo real de cada localidade (temperatura, umidade, vento, timezone) e o timestamp da última requisição.
+
+* **Tabela forecast:** Guarda o bloco de dados estruturados (JSON) com as projeções futuras das cidades em saltos de horas para alimentação dos gráficos.
+
+
