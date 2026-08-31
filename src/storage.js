@@ -9,7 +9,7 @@ export function getCidades() {
         return JSON.parse(salvas);
     }
     // Retorno padrão caso seja o primeiro acesso do usuário
-    return ['recife', 'são paulo'];
+    return ['recife', 'paulista', 'olinda'];
     // 'paulista', 'abreu e lima', 'olinda'
 }
 

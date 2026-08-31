@@ -6,6 +6,8 @@
 
 Um painel de monitoramento climático de alta performance construído com a arquitetura BFF (Backend For Frontend), focando em extração de dados inteligente, otimização de cache local e visualização de dados (Data Viz) responsiva.
 
+Acesse o site em: [WeatherDash](https://weather-dash-kclj.onrender.com/)
+
 <img width="1000" height="500" alt="weathergif1" src="https://github.com/user-attachments/assets/e67dbcdc-7539-4cd7-ac1c-a6108ccb88b6" />
 
 ---
@@ -53,6 +55,8 @@ Para garantir a escalabilidade e manutenção, o projeto aplica os princípios d
 * **Backend (Python/FastAPI):** Dividido rigorosamente em 5 camadas lógicas: Rotas (main.py), Regras de Negócio e Serviços Externos (services.py), Camada de Acesso a Dados (crud.py e database.py) e Utilitários de Memória (export.py).
 
 * **Frontend (Vanilla JS):** Código JavaScript segmentado utilizando ES Modules, separando a lógica de requisição (api.js), armazenamento (storage.js), manipulação da DOM/UI (render.js) e controladores (app.js).
+
+* **Deploy:** Hospedado e automatizado em Render, com pipeline contínuo de integração e deployment (CI/CD) direto do repositório Git, garantindo atualizações de código sem downtime e monitoramento de performance em produção. 
 
 <br>
 
