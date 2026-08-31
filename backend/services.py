@@ -94,7 +94,7 @@ async def fetch_city_suggestions(query: str):
         } for item in resp.json()]
 
 async def fetch_extended_forecast(city: str):
-    # Mantivemos a sua excelente lógica de ETL com defaultdict e agrupamento!
+    
     async with httpx.AsyncClient() as client:
         resp = await client.get(f"{FORECAST_URL}?q={city}&appid={API_KEY}&units=metric&lang=pt_br")
         if resp.status_code != 200:

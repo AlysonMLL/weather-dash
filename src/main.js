@@ -13,7 +13,7 @@ import {
     buscarLocalizacao 
 } from './app.js';
 
-// === TRUQUE DE MESTRE PARA MANTER OS ONCLICKS DO HTML FUNCIONANDO ===
+// === PARA MANTER OS ONCLICKS DO HTML FUNCIONANDO ===
 window.buscarSugestoes = buscarSugestoes;
 window.adicionarCidade = adicionarCidade;
 window.removerCidade = removerCidade;
