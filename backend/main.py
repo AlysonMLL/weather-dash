@@ -23,6 +23,10 @@ init_db()
 async def root():
     return FileResponse("index.html")
 
+@app.get("/api/weather/coords")
+async def get_weather_by_coords(lat: float, lon: float):
+    return await fetch_weather_by_coords(lat, lon)
+
 @app.get("/api/weather/{city}")
 async def get_weather(city: str):
     return await fetch_weather_data(city)
@@ -42,7 +46,3 @@ async def get_extended_forecast(city: str):
 @app.get("/api/export/csv")
 async def export_data():
     return export_weather_data_to_zip()
-
-@app.get("/api/weather/coords")
-async def get_weather_by_coords(lat: float, lon: float):
-    return await fetch_weather_by_coords(lat, lon)
