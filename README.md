@@ -12,6 +12,8 @@ Acesse o site em: [WeatherDash](https://weather-dash-kclj.onrender.com/) (talvez
 
 <p align="center">
 
+<img width="70" height="70" alt="vs-code-svgrepo-com" src="https://github.com/user-attachments/assets/d7906bee-7540-4bff-935d-ef3ea886e5be" />
+
 <img width="70" height="70" alt="python-svgrepo" src="https://github.com/user-attachments/assets/2439d9a9-a6b7-49ea-bec0-4aeb9eb0608b" />
 
 <img width="70" height="70" alt="javascript-svgrepo-com" src="https://github.com/user-attachments/assets/f02fd815-05f8-4b40-b76f-1c5cff272f4e" />
@@ -24,8 +26,8 @@ Acesse o site em: [WeatherDash](https://weather-dash-kclj.onrender.com/) (talvez
 
 <img width="230" height="70" alt="tailwindcss2-svgrepo" src="https://github.com/user-attachments/assets/222bb634-a695-4dcd-8990-f3675147d795" />
 
-
 </p>
+
 
 <p align="center">
 
