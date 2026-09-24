@@ -16,31 +16,28 @@ Acesse o site em: [WeatherDash](https://weather-dash-kclj.onrender.com/) (talvez
 
 <img width="70" height="70" alt="javascript-svgrepo-com" src="https://github.com/user-attachments/assets/f02fd815-05f8-4b40-b76f-1c5cff272f4e" />
 
+<img width="60" height="70" alt="chart-js-seeklogo" src="https://github.com/user-attachments/assets/e5a9f519-a7e6-43e4-8fbc-954fd61382ce" />
+
 <img width="70" height="70" alt="html-5-svgrepo-com" src="https://github.com/user-attachments/assets/61350760-93f0-4240-9cb6-f9e79d04774c" />
 
 <img width="70" height="70" alt="css-3-svgrepo-com" src="https://github.com/user-attachments/assets/eca10606-61ea-40db-965f-991563f41871" />
 
 <img width="230" height="70" alt="tailwindcss2-svgrepo" src="https://github.com/user-attachments/assets/222bb634-a695-4dcd-8990-f3675147d795" />
 
-<img width="60" height="70" alt="chart-js-seeklogo" src="https://github.com/user-attachments/assets/e5a9f519-a7e6-43e4-8fbc-954fd61382ce" />
 
 </p>
 
 <p align="center">
 
-
-<img width="300" height="70" alt="FastAPI_logo" src="https://github.com/user-attachments/assets/2b96f7fc-ca27-4f2c-9583-7d86c4d85d86" />
+<img width="310" height="70" alt="FastAPI_logo" src="https://github.com/user-attachments/assets/2b96f7fc-ca27-4f2c-9583-7d86c4d85d86" />
 
 <img width="240" height="70" alt="render" src="https://github.com/user-attachments/assets/f6a1e874-971f-4428-857b-83fa7edf56a1" />
 
-
-
-
+<img width="150" height="70" alt="SQLite_zonalogo" src="https://github.com/user-attachments/assets/685da8be-9c8a-44e8-a7a5-1d670327f803" />
 
 </p>
 
 <br>
-
 
 <img width="1000" height="500" alt="weathergif1" src="https://github.com/user-attachments/assets/e67dbcdc-7539-4cd7-ac1c-a6108ccb88b6" />
 
@@ -137,5 +134,25 @@ O sistema relacional garante a integridade dos dados meteorológicos através de
 * **Tabela weather:** Armazena as condições meteorológicas em tempo real de cada localidade (temperatura, umidade, vento, timezone) e o timestamp da última requisição.
 
 * **Tabela forecast:** Guarda o bloco de dados estruturados (JSON) com as projeções futuras das cidades em saltos de horas para alimentação dos gráficos.
+
+<br>
+
+---
+
+<br>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" />
+  <img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" />
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" />
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
+  <img src="https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white" />
+  <img src="https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white" />
+  <img src="https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white" />
+  <img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" />
+</p>
+
 
 
