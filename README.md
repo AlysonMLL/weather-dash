@@ -6,7 +6,41 @@
 
 Um painel de monitoramento climático de alta performance construído com a arquitetura BFF (Backend For Frontend), focando em extração de dados inteligente, otimização de cache local e visualização de dados (Data Viz) responsiva.
 
-Acesse o site em: [WeatherDash](https://weather-dash-kclj.onrender.com/)
+Acesse o site em: [WeatherDash](https://weather-dash-kclj.onrender.com/) (talvez seja necessário aguardar o Render carregar a página)
+
+<br>
+
+<p align="center">
+
+<img width="70" height="70" alt="python-svgrepo" src="https://github.com/user-attachments/assets/2439d9a9-a6b7-49ea-bec0-4aeb9eb0608b" />
+
+<img width="70" height="70" alt="javascript-svgrepo-com" src="https://github.com/user-attachments/assets/f02fd815-05f8-4b40-b76f-1c5cff272f4e" />
+
+<img width="70" height="70" alt="html-5-svgrepo-com" src="https://github.com/user-attachments/assets/61350760-93f0-4240-9cb6-f9e79d04774c" />
+
+<img width="70" height="70" alt="css-3-svgrepo-com" src="https://github.com/user-attachments/assets/eca10606-61ea-40db-965f-991563f41871" />
+
+<img width="230" height="70" alt="tailwindcss2-svgrepo" src="https://github.com/user-attachments/assets/222bb634-a695-4dcd-8990-f3675147d795" />
+
+<img width="60" height="70" alt="chart-js-seeklogo" src="https://github.com/user-attachments/assets/e5a9f519-a7e6-43e4-8fbc-954fd61382ce" />
+
+</p>
+
+<p align="center">
+
+
+<img width="300" height="70" alt="FastAPI_logo" src="https://github.com/user-attachments/assets/2b96f7fc-ca27-4f2c-9583-7d86c4d85d86" />
+
+<img width="240" height="70" alt="render" src="https://github.com/user-attachments/assets/f6a1e874-971f-4428-857b-83fa7edf56a1" />
+
+
+
+
+
+</p>
+
+<br>
+
 
 <img width="1000" height="500" alt="weathergif1" src="https://github.com/user-attachments/assets/e67dbcdc-7539-4cd7-ac1c-a6108ccb88b6" />
 
